@@ -1,2 +1,210 @@
 # manifest.json
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head><link rel="manifest" href="manifest.json">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SEOUL ARMY TOUR 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --purple: #8A2BE2; /* 阿米專屬紫 */
+            --black: #000000;
+            --marble: #F2F2F2;
+            --hard-shadow: 6px 6px 0px #000000;
+        }
+
+        * { box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            background-color: var(--marble);
+            background-image: radial-gradient(#d1d1d1 1px, transparent 1px);
+            background-size: 20px 20px;
+            margin: 0; padding: 20px; padding-bottom: 120px; color: var(--black);
+        }
+
+        /* Neo-Brutalism 硬陰影卡片 */
+        .neo-card {
+            background: white; border: 3px solid var(--black);
+            box-shadow: var(--hard-shadow); padding: 15px; margin-bottom: 25px;
+        }
+
+        h1 { font-size: 3rem; line-height: 0.8; margin: 0 0 20px 0; text-transform: uppercase; letter-spacing: -2px; }
+        h2 { font-weight: 900; text-transform: uppercase; margin: 0 0 15px 0; font-size: 1.4rem; background: var(--purple); color: white; display: inline-block; padding: 2px 12px; border: 3px solid var(--black); }
+
+        /* 雜誌風六宮格 */
+        .grid-container {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px;
+        }
+        .main-card { grid-column: span 2; background: var(--black); color: white; border-color: var(--purple); }
+
+        /* 橫向日期滑動選單 */
+        .date-scroller {
+            display: flex; overflow-x: auto; gap: 10px; padding: 5px 5px 15px 5px; margin-bottom: 10px;
+            scrollbar-width: none;
+        }
+        .date-scroller::-webkit-scrollbar { display: none; }
+        .date-btn {
+            flex: 0 0 auto; padding: 12px 20px; border: 3px solid var(--black);
+            background: white; font-weight: 900; box-shadow: 4px 4px 0px var(--black);
+        }
+        .date-btn.active { background: var(--purple); color: white; transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--black); }
+
+        /* 時間軸 */
+        .timeline { border-left: 4px solid var(--black); margin: 10px 0 30px 15px; padding-left: 20px; display: none; }
+        .timeline.active { display: block; }
+        .event { position: relative; margin-bottom: 25px; }
+        .event::before {
+            content: ""; position: absolute; left: -29px; top: 5px;
+            width: 14px; height: 14px; background: var(--purple); border: 3px solid var(--black);
+        }
+        .time { font-size: 0.85rem; color: #666; font-weight: 900; margin-bottom: 2px; }
+        .desc { font-size: 1.15rem; font-weight: 900; line-height: 1.3; }
+        .sub-desc { font-size: 0.9rem; color: #444; margin-top: 5px; border-left: 3px solid #ddd; padding-left: 8px; font-weight: 700; }
+
+        /* 韓幣計算機 */
+        .calc-screen { background: var(--black); color: var(--purple); padding: 20px; text-align: right; margin-bottom: 15px; border: 3px solid var(--black); }
+        #krw-val { font-size: 2.2rem; display: block; font-weight: 900; }
+        #twd-val { font-size: 1.1rem; opacity: 0.8; font-weight: 900; }
+        .calc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .btn {
+            background: white; border: 3px solid var(--black); padding: 18px;
+            font-size: 1.4rem; font-weight: 900; box-shadow: 4px 4px 0px var(--black);
+        }
+        .btn:active { transform: translate(3px, 3px); box-shadow: none; }
+
+        /* 底部置中長條按鈕 */
+        .footer-nav { position: fixed; bottom: 20px; left: 0; width: 100%; display: flex; justify-content: center; padding: 0 20px; z-index: 100; }
+        .add-btn {
+            width: 100%; max-width: 500px; background: var(--purple); color: white;
+            border: 4px solid var(--black); padding: 18px; font-size: 1.3rem; font-weight: 900;
+            box-shadow: 8px 8px 0px var(--black); text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>SEOUL<br><span style="color:var(--purple)">ARMY.</span></h1>
+
+    <div class="grid-container">
+        <div class="neo-card main-card">
+            <div style="font-size: 1.6rem;">KOREA TOUR 2026</div>
+            <div style="font-size: 0.9rem; opacity: 0.8;">BORAHAE TRIP 💜 04/09-04/13</div>
+        </div>
+        <div class="neo-card"><h2>MAP</h2></div>
+        <div class="neo-card"><h2>BUDGET</h2></div>
+    </div>
+
+    <h2>SCHEDULE</h2>
+    <div class="date-scroller">
+        <button class="date-btn active" onclick="showDay(9, this)">04/09 (四)</button>
+        <button class="date-btn" onclick="showDay(10, this)">04/10 (五)</button>
+        <button class="date-btn" onclick="showDay(11, this)">04/11 (六)</button>
+        <button class="date-btn" onclick="showDay(12, this)">04/12 (日)</button>
+        <button class="date-btn" onclick="showDay(13, this)">04/13 (一)</button>
+    </div>
+
+    <div id="day9" class="timeline active">
+        <div class="event"><div class="time">07:05</div><div class="desc">高雄🛫11:00 仁川 T2</div></div>
+        <div class="event"><div class="time">12:00</div><div class="desc">出境搭巴士 6003</div><div class="sub-desc">班次：12:04 / 12:29 / 12:49</div></div>
+        <div class="event"><div class="time">13:00</div><div class="desc">機場 ➔ 破破屋</div></div>
+        <div class="event"><div class="time">14:30</div><div class="desc">抵達演唱會場地</div></div>
+        <div class="event" style="color:var(--purple)"><div class="time">19:00</div><div class="desc">演唱會正式開始 🔥</div></div>
+        <div class="event"><div class="time">21:30</div><div class="desc">與加班雯宵夜場 🍗</div></div>
+        <div class="event"><div class="time">22:30</div><div class="desc">Taxi 回破破屋</div><div class="sub-desc">公車最晚 01:13 有一台</div></div>
+    </div>
+
+    <div id="day10" class="timeline">
+        <div class="event"><div class="time">10:00</div><div class="desc">出門：弘大 Olive Young</div><div class="sub-desc">換錢預算：$1000</div></div>
+        <div class="event"><div class="time">12:00</div><div class="desc">與加班雯午餐</div></div>
+        <div class="event"><div class="time">14:30</div><div class="desc">弘大採買之旅</div><div class="sub-desc">T1 外套/拍貼機、Aesop 聞香水</div></div>
+        <div class="event"><div class="time">16:00</div><div class="desc">咖啡中藥房 ☕</div></div>
+        <div class="event"><div class="time">17:00</div><div class="desc">明洞戰區</div><div class="sub-desc">明洞換錢 / No Brand / Mini Line</div></div>
+    </div>
+
+    <div id="day11" class="timeline">
+        <div class="event" style="color:var(--purple)"><div class="time">06:00</div><div class="desc">前往場地排隊！</div><div class="sub-desc">07:00-11:00 領取週邊應援</div></div>
+        <div class="event"><div class="time">13:00</div><div class="desc">回破破屋洗漱化妝</div></div>
+        <div class="event"><div class="time">15:00</div><div class="desc">逛爆樂天 (帶行李箱)</div></div>
+        <div class="event"><div class="time">18:30</div><div class="desc">轉移至 閃亮亮屋</div></div>
+        <div class="event" style="color:var(--purple)"><div class="time">19:00</div><div class="desc">演唱會線上直播 💜</div></div>
+    </div>
+
+    <div id="day12" class="timeline">
+        <div class="event"><div class="time">10:00</div><div class="desc">回破破屋放行李</div></div>
+        <div class="event"><div class="time">12:00</div><div class="desc">阿米朋友聚餐：海鮮 🦀</div></div>
+        <div class="event"><div class="time">14:00</div><div class="desc">弘大最後衝刺</div></div>
+        <div class="event" style="color:var(--purple)"><div class="time">19:00</div><div class="desc">演唱會 Day 2 開始</div></div>
+    </div>
+
+    <div id="day13" class="timeline">
+        <div class="event"><div class="time">10:00</div><div class="desc">退房寄放行李</div></div>
+        <div class="event"><div class="time">10:30</div><div class="desc">通仁市場 / 新和平市場</div><div class="sub-desc">購買背心清單</div></div>
+        <div class="event"><div class="time">12:00</div><div class="desc">聖水洞聖地巡禮 ✨</div><div class="sub-desc">LADOR(JM) / LOE(JK) / Compose(V) / TIRTIR(V) / Newmix</div></div>
+        <div class="event"><div class="time">17:45</div><div class="desc">回破破屋拿行李 ➔ 機場</div></div>
+        <div class="event"><div class="time">20:35</div><div class="desc">起飛返台 ✈️</div></div>
+    </div>
+
+    <h2>KRW MONEY CALC</h2>
+    <div class="neo-card">
+        <div class="calc-screen">
+            <span id="krw-val">0 KRW</span>
+            <span id="twd-val">≈ 0 TWD</span>
+        </div>
+        <div class="calc-grid">
+            <button class="btn" onclick="press(1)">1</button>
+            <button class="btn" onclick="press(2)">2</button>
+            <button class="btn" onclick="press(3)">3</button>
+            <button class="btn" onclick="press(4)">4</button>
+            <button class="btn" onclick="press(5)">5</button>
+            <button class="btn" onclick="press(6)">6</button>
+            <button class="btn" onclick="press(7)">7</button>
+            <button class="btn" onclick="press(8)">8</button>
+            <button class="btn" onclick="press(9)">9</button>
+            <button class="btn" style="background:#eee" onclick="cls()">C</button>
+            <button class="btn" onclick="press(0)">0</button>
+            <button class="btn" style="background:var(--purple); color:white;" onclick="save()">SAVE</button>
+        </div>
+    </div>
+
+    <div class="footer-nav">
+        <button class="add-btn">Add New Record</button>
+    </div>
+
+    <script>
+        // 切換日期
+        function showDay(day, btn) {
+            document.querySelectorAll('.timeline').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.date-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById('day' + day).classList.add('active');
+            btn.classList.add('active');
+            window.scrollTo({ top: document.querySelector('h2').offsetTop - 20, behavior: 'smooth' });
+        }
+
+        // 計算機邏輯
+        let currentInput = "";
+        const RATE = 0.0235; // 韓幣轉台幣匯率
+
+        function press(num) {
+            currentInput += num;
+            render();
+        }
+        function cls() {
+            currentInput = "";
+            render();
+        }
+        function render() {
+            const val = currentInput || "0";
+            document.getElementById('krw-val').innerText = parseInt(val).toLocaleString() + " KRW";
+            document.getElementById('twd-val').innerText = "≈ " + Math.round(parseInt(val) * RATE).toLocaleString() + " TWD";
+        }
+        function save() {
+            if(!currentInput) return;
+            alert("已儲存花費: " + currentInput + " KRW");
+            cls();
+        }
+    </script>
+</body>
+</html>
+
 {   "name": "ARMY Seoul Trip",   "short_name": "SeoulTrip",   "start_url": "index.html",   "display": "standalone",   "background_color": "#F2F2F2",   "theme_color": "#8A2BE2",   "icons": [{     "src": "https://img.icons8.com/color/512/purple-heart.png",     "sizes": "512x512",     "type": "image/png"   }] }
