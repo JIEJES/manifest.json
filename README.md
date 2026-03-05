@@ -1,0 +1,2 @@
+# manifest.json
+{   "name": "ARMY Seoul Trip",   "short_name": "SeoulTrip",   "start_url": "index.html",   "display": "standalone",   "background_color": "#F2F2F2",   "theme_color": "#8A2BE2",   "icons": [{     "src": "https://img.icons8.com/color/512/purple-heart.png",     "sizes": "512x512",     "type": "image/png"   }] }
